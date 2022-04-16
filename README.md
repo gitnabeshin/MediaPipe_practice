@@ -1,1 +1,19 @@
-# computer_vison
+# Study of Computer Vision
+
+https://www.youtube.com/watch?v=01sAkU_NvOY
+
+## Setup
+
+for iMac
+
+```
+% python3 --version
+Python 3.9.0
+% brew install opencv
+% pip3 install opencv-python
+% pip3 install mediapipe
+
+% python3 HandTracking.py
+```
+
+allow using main camera.
