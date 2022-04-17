@@ -6,7 +6,15 @@ import time
 cap = cv2.VideoCapture(0)
 
 mpHands = mp.solutions.hands
-# hands = mpHands.Hands(False, 2, 0.5, 0.5)
+
+# class Hands(SolutionBase):
+#   def __init__(self,
+#                static_image_mode=False,
+#                max_num_hands=2,
+#                model_complexity=1,
+#                min_detection_confidence=0.5,
+#                min_tracking_confidence=0.5):
+# hands = mpHands.Hands(False, 2, 1, 0.5, 0.5)
 hands = mpHands.Hands()
 mpDraw = mp.solutions.drawing_utils
 
