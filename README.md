@@ -1,6 +1,7 @@
 # Study of Computer Vision
 
-https://www.youtube.com/watch?v=01sAkU_NvOY
+* https://google.github.io/mediapipe/
+* https://www.youtube.com/watch?v=01sAkU_NvOY
 
 ## Setup
 
