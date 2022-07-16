@@ -78,21 +78,6 @@ class PoseDetector():
 
         return lmList
 
-    def find_posture(self, img, draw=True):
-
-        lmList = []
-        refList = [0, 11, 12, 23, 24, 16]
-
-        if self.results.pose_landmarks:
-            for id, lm in enumerate(self.results.pose_landmarks.landmark):
-                if id in refList:
-                    h, w, c = img.shape
-                    cx, cy = int(lm.x*w), int(lm.y*h)
-                    lmList.append([id, cx, cy])
-                    # print(id, lm, cx, cy, h, w)
-
-        return lmList
-
 
 def main():
     # cap = cv2.VideoCapture("movie/1.mp4")
