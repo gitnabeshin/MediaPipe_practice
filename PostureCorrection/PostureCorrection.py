@@ -1,9 +1,15 @@
+from asyncio import subprocess
 import cv2
 import time
 import numpy as np
 import PoseEstimationModule as pemod
 
+# import subprocess
+
 cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
 detector = pemod.PoseDetector()
 
 pTime = 0
@@ -61,10 +67,10 @@ def judge_poor_posture(lmList):
         return False
     ref_x11, ref_y11 = recLmList[11][1], recLmList[11][2]
     ref_x12, ref_y12 = recLmList[12][1], recLmList[12][2]
-    ref_x0, ref_y0 = recLmList[0][1], recLmList[0][2]
+    ref_x0,  ref_y0  = recLmList[0][1],  recLmList[0][2]
     x11, y11 = lmList[11][1], lmList[11][2]
     x12, y12 = lmList[12][1], lmList[12][2]
-    x0, y0 = lmList[0][1], lmList[0][2]
+    x0,  y0  = lmList[0][1], lmList[0][2]
 
     if abs(ref_x11 - x11) > x_threshold or abs(ref_y11 - y11) > y_threshold:
         return True
@@ -88,11 +94,11 @@ while True:
         is_count_mode = False
         is_recorded = False
         counter = 5
-        cv2.putText(img, "RESET", (100, 100), cv2.FONT_HERSHEY_PLAIN, 5, (0, 255, 0), 5)
+        cv2.putText(img, "RESET", (int(w/8), 100), cv2.FONT_HERSHEY_PLAIN, 5, (0, 255, 0), 5)
 
     if is_record_gesture(lmList):
         is_count_mode = True
-        cv2.putText(img, "RECORD MODE", (100, 100), cv2.FONT_HERSHEY_PLAIN, 5, (0, 255, 0), 5)
+        cv2.putText(img, "RECORD MODE", (int(w/8), 100), cv2.FONT_HERSHEY_PLAIN, 5, (0, 255, 0), 5)
 
     # params of alpha brend
     alpha = 0.5
@@ -102,21 +108,22 @@ while True:
     count = rec_count_down()
     if count > 0:
         img = cv2.addWeighted(img, alpha, mask, beta, 30)
-        cv2.putText(img, f'COUNTING: {int(count)}', (int(w/5), int(h/5)), cv2.FONT_HERSHEY_PLAIN, 5, (255, 0, 0), 5)
+        cv2.putText(img, f'COUNTING: {int(count)}', (int(w/8), int(h/5)), cv2.FONT_HERSHEY_PLAIN, 5, (255, 0, 0), 5)
     elif count == 0 and is_recorded == False:
         record_pose(lmList)
         img = cv2.addWeighted(img, alpha, mask, beta, 30)
-        cv2.putText(img, "POSE Recorded!", (int(w/5), int(h/5) + 10), cv2.FONT_HERSHEY_PLAIN, 5, (255, 0, 0), 5)
+        cv2.putText(img, "POSE Recorded!", (int(w/8), int(h/5) + 10), cv2.FONT_HERSHEY_PLAIN, 5, (255, 0, 0), 5)
 
     if judge_poor_posture(lmList):
         img = cv2.addWeighted(img, alpha, mask, beta, 128)
-        cv2.putText(img, "NEKOZE!!", (int(w/2), int(h/2)), cv2.FONT_HERSHEY_PLAIN, 10, (0, 0, 255), 10)
+        # subprocess.call(["say", "poor posture keep strait!"])
+        cv2.putText(img, "NEKOZE!!", (int(w/3), int(h/2)), cv2.FONT_HERSHEY_PLAIN, 10, (0, 0, 255), 10)
 
     # frame rate
     cTime = time.time()
     fps = 1/(cTime-pTime)
     pTime = cTime
-    cv2.putText(img, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
+    cv2.putText(img, f'FPS:{int(fps)}', (20, 40), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
 
     cv2.imshow("Img", img)
     cv2.waitKey(1)
